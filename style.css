@@ -1,0 +1,92 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+}
+
+input, select, textarea, button {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+.log-entry {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.log-entry strong {
+  display: inline-block;
+  width: 100px;
+}
+
+.log-entry img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* AI Section Styling */
+#aiForm {
+  display: grid;
+  gap: 10px;
+}
+
+#aiQuestion {
+  resize: vertical;
+  min-height: 60px;
+}
+
+#aiAnswer {
+  background: #e9f5ff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  white-space: pre-wrap; /* keeps formatting for logs */
+  border: 1px solid #b3e0ff;
+}

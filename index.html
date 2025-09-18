@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pet Recovery Log</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>🐾 Pet Recovery Log</h1>
+  <div class="container">
+    <form id="logForm">
+      <label for="date">Date</label>
+      <input type="date" id="date" required>
+
+      <label for="food">Food Intake</label>
+      <select id="food" required>
+        <option value="">-- Choose --</option>
+        <option value="100%">100%</option>
+        <option value="75%">75%</option>
+        <option value="50%">50%</option>
+        <option value="25%">25%</option>
+        <option value="None">None</option>
+      </select>
+
+      <label for="meds">Medicine Given</label>
+      <select id="meds" required>
+        <option value="">-- Choose --</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label for="energy">Energy / Mood</label>
+      <select id="energy" required>
+        <option value="">-- Choose --</option>0
+        <option value="High">High</option>
+        <option value="Normal">Normal</option>
+        <option value="Low">Low</option>
+      </select>
+
+      <label for="notes">Notes</label>
+      <textarea id="notes" rows="3"></textarea>
+
+      <label for="photo">Photo (optional)</label>
+      <input type="file" id="photo" accept="image/*">
+
+      <button type="submit">Add Log</button>
+    </form>
+
+    <h2>📋 Recovery History</h2>
+    <div id="logList"></div>
+  </div>
+  <div class="container">
+    <h2>🤖 Ask AI about recovery</h2>
+    <form id="aiForm">
+      <textarea id="aiQuestion" rows="3" placeholder="Type your question..."></textarea>
+      <button type="submit">Ask AI</button>
+    </form>
+    <div id="aiAnswer"></div>
+  </div>
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
