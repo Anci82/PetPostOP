@@ -9,6 +9,43 @@
 
 <body>
   <h1>🐾 Pet Recovery Log</h1>
+
+  <!-- PET INFO -->
+<div class="container">
+  <h2>🐶🐱 Pet General Info (Fill Once)</h2>
+  <form id="petInfoForm">
+    <label for="petType">Pet Type</label>
+    <select id="petType" required>
+      <option value="">-- Choose --</option>
+      <option value="Dog">Dog</option>
+      <option value="Cat">Cat</option>
+    </select>
+
+    <label for="petAge">Age (years)</label>
+    <input type="number" id="petAge" min="0" required>
+
+    <label for="petBreed">Breed (if dog)</label>
+    <select id="petBreed">
+      <option value="">-- Choose breed --</option>
+    </select>
+
+    <label for="surgeryType">Type of Surgery</label>
+    <input type="text" id="surgeryType" required>
+
+    <label for="surgeryReason">Reason / Notes</label>
+    <textarea id="surgeryReason" rows="3"></textarea>
+
+    <button type="submit">Save Pet Info</button>
+  </form>
+</div>
+
+<!-- PET INFO SUMMARY -->
+<div id="petInfoDisplay" class="container">
+  <h2>📌 Pet Info Summary</h2>
+  <div id="petInfoContent">No pet info saved yet.</div>
+</div>
+
+  <!-- DAILY LOG -->
   <div class="container">
     <form id="logForm">
       <label for="date">Date</label>
@@ -23,46 +60,58 @@
         <option value="25%">25%</option>
         <option value="None">None</option>
       </select>
+      <button type="button" class="same-btn" data-field="food">Same as yesterday</button>
 
-      <label for="meds">Medicine Given</label>
-      <select id="meds" required>
-        <option value="">-- Choose --</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
+      <label for="medName">Medicine Name</label>
+      <input type="text" id="medName">
+      <label for="medDosage">Dosage (mg)</label>
+      <input type="number" id="medDosage" min="0">
+      <label for="medTimes">Times per Day</label>
+      <input type="number" id="medTimes" min="0">
+      <button type="button" class="same-btn" data-field="medName">Same as yesterday</button>
 
       <label for="energy">Energy / Mood</label>
       <select id="energy" required>
-        <option value="">-- Choose --</option>0
+        <option value="">-- Choose --</option>
         <option value="High">High</option>
         <option value="Normal">Normal</option>
         <option value="Low">Low</option>
       </select>
+      <button type="button" class="same-btn" data-field="energy">Same as yesterday</button>
 
       <label for="notes">Notes</label>
       <textarea id="notes" rows="3"></textarea>
+      <button type="button" class="same-btn" data-field="notes">Same as yesterday</button>
 
       <label for="photo">Photo (optional)</label>
       <input type="file" id="photo" accept="image/*">
 
+      <button type="button" id="sameAll">Everything same as yesterday</button>
       <button type="submit">Add Log</button>
     </form>
 
     <h2>📋 Recovery History</h2>
     <div id="logList"></div>
   </div>
+
+  <!-- AI SECTION -->
   <div class="container">
     <h2>🤖 Ask AI about recovery</h2>
     <form id="aiForm">
-      <textarea id="aiQuestion" rows="3" placeholder="Type your question..."></textarea>
+      <label for="aiOption">AI Action:</label>
+      <select id="aiOption">
+        <option value="summary">Analyze Recovery</option>
+        <option value="question">Ask a Question</option>
+      </select>
+
+      <textarea id="aiQuestion" rows="3" placeholder="Type your question..." disabled></textarea>
       <button type="submit">Ask AI</button>
     </form>
     <div id="aiAnswer"></div>
   </div>
 
-
+  <button type="button" onclick="resetAllData()">Reset All Data</button>
 
   <script src="script.js"></script>
 </body>
-
 </html>

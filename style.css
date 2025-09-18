@@ -1,8 +1,10 @@
+/* --- GLOBAL STYLING --- */
 body {
   font-family: Arial, sans-serif;
   background: #f7f7f7;
   margin: 0;
   padding: 20px;
+  color: #333;
 }
 
 h1, h2 {
@@ -11,15 +13,17 @@ h1, h2 {
   margin-bottom: 12px;
 }
 
+/* --- CONTAINERS --- */
 .container {
   max-width: 600px;
   margin: 0 auto 20px;
   background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
+/* --- FORMS --- */
 form {
   display: grid;
   gap: 12px;
@@ -36,25 +40,60 @@ input, select, textarea, button {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+textarea {
+  resize: vertical;
+}
+
+/* --- BUTTONS --- */
 button {
-  background: #4CAF50;
-  color: white;
   cursor: pointer;
   border: none;
-  transition: background 0.2s;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.2s ease;
 }
 
-button:hover {
+/* Primary button */
+button[type="submit"] {
+  background: #4CAF50;
+  color: white;
+}
+
+button[type="submit"]:hover {
   background: #45a049;
 }
 
+/* Secondary button */
+.same-btn, #sameAll {
+  background: #ff9800;
+  color: white;
+}
+
+.same-btn:hover, #sameAll:hover {
+  background: #e68a00;
+}
+
+/* Reset button */
+button.reset-btn {
+  background: #f44336;
+  color: white;
+}
+
+button.reset-btn:hover {
+  background: #d32f2f;
+}
+
+/* --- LOG ENTRIES --- */
 .log-entry {
   background: #f0f0f0;
   border-radius: 8px;
   padding: 12px;
   margin-top: 10px;
+  border-left: 4px solid #4CAF50;
 }
 
 .log-entry strong {
@@ -71,7 +110,36 @@ button:hover {
   border: 1px solid #ccc;
 }
 
-/* AI Section Styling */
+/* Highlight copied fields */
+.copied {
+  background-color: #fff8b3;
+  transition: background-color 1.5s ease;
+}
+
+/* --- PET INFO & SUMMARY --- */
+#petInfoDisplay {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fdfdfd;
+  position: relative;
+}
+
+#petInfoDisplay button.edit-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+#petInfoDisplay button.edit-btn:hover {
+  background: #1976D2;
+}
+
+/* --- AI SECTION --- */
 #aiForm {
   display: grid;
   gap: 10px;
@@ -87,6 +155,27 @@ button:hover {
   padding: 12px;
   border-radius: 8px;
   margin-top: 10px;
-  white-space: pre-wrap; /* keeps formatting for logs */
+  white-space: pre-wrap;
   border: 1px solid #b3e0ff;
+}
+
+/* --- FORM GROUPING --- */
+.field-group {
+  display: grid;
+  gap: 6px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+/* --- FLEX ROWS --- */
+.flex-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.flex-row input, .flex-row select {
+  flex: 1;
 }
