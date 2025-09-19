@@ -1,117 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pet Recovery Log</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>🐾 Pet Recovery Log</h1>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Pet Recovery Log</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+    <!-- PET INFO -->
+    <div class="container" id="petInfoWrapper">
+      <h2>🐶🐱 Pet General Info (Fill Once)</h2>
+      <form id="petInfoForm">
+        <div class="field-group">
+          <label for="petType">Pet Type</label>
+          <select id="petType" required>
+            <option value="">-- Choose --</option>
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+          </select>
 
-<body>
-  <h1>🐾 Pet Recovery Log</h1>
+          <label for="petAge">Age (years)</label>
+          <input type="number" id="petAge" min="0" required />
 
-  <!-- PET INFO -->
-<div class="container">
-  <h2>🐶🐱 Pet General Info (Fill Once)</h2>
-  <form id="petInfoForm">
-    <label for="petType">Pet Type</label>
-    <select id="petType" required>
-      <option value="">-- Choose --</option>
-      <option value="Dog">Dog</option>
-      <option value="Cat">Cat</option>
-    </select>
+          <label for="petBreed">Breed (if dog)</label>
+          <select id="petBreed">
+            <option value="">-- Choose breed --</option>
+          </select>
 
-    <label for="petAge">Age (years)</label>
-    <input type="number" id="petAge" min="0" required>
+          <label for="surgeryType">Type of Surgery</label>
+          <input type="text" id="surgeryType" required />
 
-    <label for="petBreed">Breed (if dog)</label>
-    <select id="petBreed">
-      <option value="">-- Choose breed --</option>
-    </select>
+          <label for="surgeryReason">Reason / Notes</label>
+          <textarea id="surgeryReason" rows="3"></textarea>
 
-    <label for="surgeryType">Type of Surgery</label>
-    <input type="text" id="surgeryType" required>
+          <button type="submit" class="primary-btn">Save Pet Info</button>
+        </div>
+      </form>
+    </div>
 
-    <label for="surgeryReason">Reason / Notes</label>
-    <textarea id="surgeryReason" rows="3"></textarea>
+    <!-- PET INFO SUMMARY -->
+    <div id="petInfoDisplay" class="container">
+      <h2>📌 Pet Info Summary</h2>
+      <div id="petInfoContent">No pet info saved yet.</div>
+    </div>
 
-    <button type="submit">Save Pet Info</button>
-  </form>
-</div>
+    <!-- DAILY LOG -->
+    <div class="container" id="dailyLogWrapper">
+      <h2>🗓 Daily Recovery Log</h2>
+      <form id="logForm">
+        <div class="field-group">
+          <label for="date">Date of Entry</label>
+          <small class="helper-text"
+            >Select the date for this entry. Make sure it’s today or the correct
+            day you’re logging.</small
+          >
+          <input type="date" id="date" required />
+          <small class="helper-text"
+            >You can copy your last log with the button below and add a new
+            photo if needed.</small
+          >
+          <button type="button" id="copyAllBtn" class="secondary-btn">
+            Copy all from last entry
+          </button>
 
-<!-- PET INFO SUMMARY -->
-<div id="petInfoDisplay" class="container">
-  <h2>📌 Pet Info Summary</h2>
-  <div id="petInfoContent">No pet info saved yet.</div>
-</div>
+          <div class="flex-row">
+            <label for="food">
+              Food Intake
+              <span class="helper-text"
+                >(Select how much your pet ate today)</span
+              >
+            </label>
+            <select id="food" required>
+              <option value="">-- Choose --</option>
+              <option value="100%">100%</option>
+              <option value="75%">75%</option>
+              <option value="50%">50%</option>
+              <option value="25%">25%</option>
+              <option value="None">None</option>
+            </select>
+            <button type="button" class="copy-btn" data-field="food">
+              Copy last
+            </button>
+          </div>
 
-  <!-- DAILY LOG -->
-  <div class="container">
-    <form id="logForm">
-      <label for="date">Date</label>
-      <input type="date" id="date" required>
+          <div class="field-group">
+            <label>
+              Medications
+              <span class="helper-text"
+                >(Add medicine name, dosage in mg, and times per day)</span
+              >
+            </label>
+            <div class="flex-row" id="meds">
+              <input type="text" id="medName" placeholder="Medicine Name" />
+              <input
+                type="number"
+                id="medDosage"
+                placeholder="Dosage (mg)"
+                min="0"
+              />
+              <input
+                type="number"
+                id="medTimes"
+                placeholder="Times per Day"
+                min="0"
+              />
+              <button type="button" class="copy-btn" data-field="medName">
+                Copy last
+              </button>
+            </div>
+          </div>
 
-      <label for="food">Food Intake</label>
-      <select id="food" required>
-        <option value="">-- Choose --</option>
-        <option value="100%">100%</option>
-        <option value="75%">75%</option>
-        <option value="50%">50%</option>
-        <option value="25%">25%</option>
-        <option value="None">None</option>
-      </select>
-      <button type="button" class="same-btn" data-field="food">Same as yesterday</button>
+          <div class="flex-row">
+            <label for="energy">
+              Energy / Mood
+              <span class="helper-text"
+                >(Describe your pet's energy level today)</span
+              >
+            </label>
+            <select id="energy" required>
+              <option value="">-- Choose --</option>
+              <option value="High">High</option>
+              <option value="Normal">Normal</option>
+              <option value="Low">Low</option>
+            </select>
+            <button type="button" class="copy-btn" data-field="energy">
+              Copy last
+            </button>
+          </div>
 
-      <label for="medName">Medicine Name</label>
-      <input type="text" id="medName">
-      <label for="medDosage">Dosage (mg)</label>
-      <input type="number" id="medDosage" min="0">
-      <label for="medTimes">Times per Day</label>
-      <input type="number" id="medTimes" min="0">
-      <button type="button" class="same-btn" data-field="medName">Same as yesterday</button>
+          <label for="notes">
+            Notes
+            <span class="helper-text"
+              >(Add any extra observations about your pet today)</span
+            >
+          </label>
+          <textarea
+            id="notes"
+            rows="3"
+            placeholder="Describe your pet's mood or any other notes"
+          ></textarea>
+          <button type="button" class="copy-btn" data-field="notes">
+            Copy last
+          </button>
 
-      <label for="energy">Energy / Mood</label>
-      <select id="energy" required>
-        <option value="">-- Choose --</option>
-        <option value="High">High</option>
-        <option value="Normal">Normal</option>
-        <option value="Low">Low</option>
-      </select>
-      <button type="button" class="same-btn" data-field="energy">Same as yesterday</button>
+          <label for="photo" id="photo-label">
+            Photo (optional)
+            <span class="helper-text"
+              >(Add a picture for today's log if you like)</span
+            >
+          </label>
+          <input type="file" id="photo" accept="image/*" />
 
-      <label for="notes">Notes</label>
-      <textarea id="notes" rows="3"></textarea>
-      <button type="button" class="same-btn" data-field="notes">Same as yesterday</button>
+          <button type="submit" class="primary-btn" id="add-log-btn">Add Log</button>
+        </div>
+      </form>
 
-      <label for="photo">Photo (optional)</label>
-      <input type="file" id="photo" accept="image/*">
+      <h2>📋 Recovery History</h2>
+      <div id="logList"></div>
+    </div>
 
-      <button type="button" id="sameAll">Everything same as yesterday</button>
-      <button type="submit">Add Log</button>
-    </form>
+    <!-- AI SECTION -->
+    <div class="container">
+      <h2>🤖 Ask AI about recovery</h2>
+      <form id="aiForm">
+        <label for="aiOption">AI Action:</label>
+        <select id="aiOption">
+          <option value="summary">Analyze Recovery</option>
+          <option value="question">Ask a Question</option>
+        </select>
 
-    <h2>📋 Recovery History</h2>
-    <div id="logList"></div>
-  </div>
+        <textarea
+          id="aiQuestion"
+          rows="3"
+          placeholder="Type your question..."
+          disabled
+        ></textarea>
+        <button type="submit" class="primary-btn">Ask AI</button>
+      </form>
+      <div id="aiAnswer"></div>
+    </div>
 
-  <!-- AI SECTION -->
-  <div class="container">
-    <h2>🤖 Ask AI about recovery</h2>
-    <form id="aiForm">
-      <label for="aiOption">AI Action:</label>
-      <select id="aiOption">
-        <option value="summary">Analyze Recovery</option>
-        <option value="question">Ask a Question</option>
-      </select>
+    <button type="button" onclick="resetAllData()" class="reset-btn">
+      Reset All Data
+    </button>
 
-      <textarea id="aiQuestion" rows="3" placeholder="Type your question..." disabled></textarea>
-      <button type="submit">Ask AI</button>
-    </form>
-    <div id="aiAnswer"></div>
-  </div>
-
-  <button type="button" onclick="resetAllData()">Reset All Data</button>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

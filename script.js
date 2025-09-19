@@ -6,11 +6,10 @@ const petInfoContent = document.getElementById('petInfoContent');
 
 let petInfo = JSON.parse(localStorage.getItem('petInfo')) || {};
 
-// Display pet info in the summary div
 function displayPetInfo() {
-    if (!petInfo || !petInfo.type) {
-        petInfoContent.innerHTML = "No pet info saved yet.";
-        petInfoForm.style.display = 'block';
+    if (!petInfo.type || document.getElementById('petInfoWrapper').style.display == 'block') {
+        document.getElementById('petInfoDisplay').style.display = 'none';
+        document.getElementById('petInfoWrapper').style.display = 'block';
         return;
     }
 
@@ -20,16 +19,13 @@ function displayPetInfo() {
       <strong>Breed:</strong> ${petInfo.breed || "—"}<br>
       <strong>Surgery:</strong> ${petInfo.surgeryType}<br>
       <strong>Reason / Notes:</strong> ${petInfo.surgeryReason || "—"}<br>
-      <button type="button" id="editPetInfo">Edit Pet Info</button>
+      <button type="button" id="editPetInfo" class="primary-btn">Edit Pet Info</button>
     `;
 
-    // Hide form since info exists
-    petInfoForm.style.display = 'none';
+    document.getElementById('petInfoWrapper').style.display = 'none';
 
-    // Add click listener to show form again
     document.getElementById('editPetInfo').addEventListener('click', () => {
-        petInfoForm.style.display = 'block';
-        // Prefill form with existing data
+        document.getElementById('petInfoWrapper').style.display = 'block';
         petType.value = petInfo.type;
         document.getElementById('petAge').value = petInfo.age;
         breedSelect.value = petInfo.breed;
@@ -38,7 +34,6 @@ function displayPetInfo() {
     });
 }
 
-// Save pet info
 petInfoForm.addEventListener('submit', function(e) {
     e.preventDefault();
     petInfo = {
@@ -53,12 +48,10 @@ petInfoForm.addEventListener('submit', function(e) {
     alert("Pet info saved!");
 });
 
-// Show/hide breed dropdown (optional for dog/cat)
 petType.addEventListener('change', function() {
-    breedSelect.parentElement.style.display = this.value === 'Dog' ? 'block' : 'block'; // always visible now
+    breedSelect.parentElement.style.display = 'block'; // always visible
 });
 
-// Fetch dog breeds from API
 function loadDogBreeds() {
     fetch('https://dog.ceo/api/breeds/list/all')
         .then(res => res.json())
@@ -82,10 +75,9 @@ const photoInput = document.getElementById('photo');
 
 let logs = JSON.parse(localStorage.getItem('petLogs')) || [];
 
-// Display logs
 function displayLogs() {
     logList.innerHTML = "";
-    logs.forEach((log) => {
+    logs.forEach((log, idx) => {
         const div = document.createElement('div');
         div.className = 'log-entry';
         div.innerHTML = `
@@ -95,52 +87,60 @@ function displayLogs() {
           <strong>Energy:</strong> ${log.energy}<br>
           <strong>Notes:</strong> ${log.notes || "—"}<br>
           ${log.photo ? `<img src="${log.photo}" alt="Pet Photo">` : ''}
+          <button type="button" class="edit-log-btn" data-index="${idx}">Edit</button>
         `;
         logList.appendChild(div);
     });
+
+    // Edit log button
+    document.querySelectorAll('.edit-log-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const idx = this.dataset.index;
+            const log = logs[idx];
+            document.getElementById('date').value = log.date;
+            document.getElementById('food').value = log.food;
+            document.getElementById('medName').value = log.medName;
+            document.getElementById('medDosage').value = log.medDosage;
+            document.getElementById('medTimes').value = log.medTimes;
+            document.getElementById('energy').value = log.energy;
+            document.getElementById('notes').value = log.notes;
+            // remove old photo if exists
+            photoInput.value = '';
+            // remove old log to replace
+            logs.splice(idx,1);
+            localStorage.setItem('petLogs', JSON.stringify(logs));
+            displayLogs();
+        });
+    });
 }
 
-// Highlight field briefly when copied from yesterday
-function highlightField(fieldId) {
-    const input = document.getElementById(fieldId);
-    if (!input) return;
-    input.classList.add('copied');
-    setTimeout(() => input.classList.remove('copied'), 1500);
-}
+// Copy last log
+document.getElementById('copyAllBtn').addEventListener('click', function() {
+    if (!logs.length) return;
+    const lastLog = logs[logs.length-1];
+    const fields = ['food','medName','medDosage','medTimes','energy','notes'];
+    fields.forEach(field=>{
+        const el = document.getElementById(field);
+        if(el) el.value = lastLog[field] || '';
+    });
+    photoInput.value = '';
+});
 
-// Individual "same as yesterday"
-document.querySelectorAll('.same-btn').forEach(button => {
+// Individual copy buttons
+document.querySelectorAll('.copy-btn').forEach(button => {
     button.addEventListener('click', function() {
         if (!logs.length) return;
         const field = this.dataset.field;
-        const input = document.getElementById(field);
-        if (!input) return;
-        input.value = logs[logs.length - 1][field] || "";
-        highlightField(field);
+        document.getElementById(field).value = logs[logs.length-1][field] || '';
     });
 });
 
-// "Everything same as yesterday"
-document.getElementById('sameAll').addEventListener('click', function() {
-    if (!logs.length) return;
-    const lastLog = logs[logs.length - 1];
-    const fields = ['food','medName','medDosage','medTimes','energy','notes'];
-    fields.forEach(field => {
-        const input = document.getElementById(field);
-        if(input) {
-            input.value = lastLog[field] || "";
-            highlightField(field);
-        }
-    });
-});
-
-// Add new log
 form.addEventListener('submit', function(e) {
     e.preventDefault();
     const file = photoInput.files[0];
-    if(file) {
+    if(file){
         const reader = new FileReader();
-        reader.onload = function(event) {
+        reader.onload = function(event){
             saveLog(event.target.result);
         }
         reader.readAsDataURL(file);
@@ -149,7 +149,7 @@ form.addEventListener('submit', function(e) {
     }
 });
 
-function saveLog(photoData) {
+function saveLog(photoData){
     const newLog = {
         date: document.getElementById('date').value,
         food: document.getElementById('food').value,
@@ -172,20 +172,20 @@ const aiQuestion = document.getElementById('aiQuestion');
 const aiAnswer = document.getElementById('aiAnswer');
 const aiOption = document.getElementById('aiOption');
 
-aiOption.addEventListener('change', function() {
-    aiQuestion.disabled = this.value !== 'question';
+aiOption.addEventListener('change', function(){
+    aiQuestion.disabled = this.value!=='question';
 });
 
-aiForm.addEventListener('submit', function(e) {
+aiForm.addEventListener('submit', function(e){
     e.preventDefault();
     const option = aiOption.value;
-    const recentLogs = logs.slice(-7).map(log => {
-        return `${log.date}: Food ${log.food}, Meds ${log.medName || "—"} ${log.medDosage ? `(${log.medDosage} mg x ${log.medTimes}/day)` : ""}, Energy ${log.energy}, Notes: ${log.notes || "—"}, Photo ${log.photo ? "uploaded" : "none"}`;
+    const recentLogs = logs.slice(-7).map(log=>{
+        return `${log.date}: Food ${log.food}, Meds ${log.medName || "—"} ${log.medDosage?`(${log.medDosage} mg x ${log.medTimes}/day)`:""}, Energy ${log.energy}, Notes: ${log.notes||"—"}, Photo ${log.photo?"uploaded":"none"}`;
     }).join("\n");
 
-    let prompt = `Pet: ${petInfo.type || "Unknown"} (${petInfo.age || "?"} years, ${petInfo.breed || "Unknown breed"})\nSurgery: ${petInfo.surgeryType || "Unknown"}\nReason: ${petInfo.surgeryReason || "—"}\n\nRecovery logs (last 7 days):\n${recentLogs}\n`;
+    let prompt = `Pet: ${petInfo.type||"Unknown"} (${petInfo.age||"?"} years, ${petInfo.breed||"Unknown breed"})\nSurgery: ${petInfo.surgeryType||"Unknown"}\nReason: ${petInfo.surgeryReason||"—"}\n\nRecovery logs (last 7 days):\n${recentLogs}\n`;
 
-    if(option === 'question') {
+    if(option==='question'){
         const question = aiQuestion.value.trim();
         if(!question) return;
         prompt += `Owner question: "${question}"`;
@@ -194,12 +194,12 @@ aiForm.addEventListener('submit', function(e) {
     }
 
     aiAnswer.innerText = "Preparing AI response...\n\n" + prompt;
-    aiQuestion.value = "";
+    aiQuestion.value="";
 });
 
-// --- RESET FUNCTION ---
-function resetAllData() {
-    if(confirm("Are you sure you want to clear all pet info and logs?")) {
+// --- RESET ---
+function resetAllData(){
+    if(confirm("Are you sure you want to clear all pet info and logs?")){
         localStorage.removeItem('petInfo');
         localStorage.removeItem('petLogs');
         petInfo = {};
@@ -208,7 +208,7 @@ function resetAllData() {
         displayLogs();
         petInfoForm.reset();
         form.reset();
-        petInfoForm.style.display = 'block'; // show form again
+        document.getElementById('petInfoWrapper').style.display='block';
         alert("All data cleared!");
     }
 }
