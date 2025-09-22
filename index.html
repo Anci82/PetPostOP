@@ -11,19 +11,15 @@
       <div class="header-left">
         <h1>GetWellPaws</h1>
       </div>
-      <!-- Pre-login buttons -->
       <div class="header-right" id="headerRight">
-  <div class="login-group">
-    <input type="password" id="loginPassword" placeholder="Password" />
-    <input type="text" id="loginUsername" placeholder="Username" />
-  </div>
-  <div class="btn-group">
-    <button id="loginBtn" class="primary-btn">Log In</button>
-    <button id="registerBtn" class="secondary-btn">Register</button>
-  </div>
-</div>
-
-        <!-- Post-login will show user icon + sign out -->
+        <div class="login-group">
+          <input type="text" id="loginUsername" placeholder="Username" />
+          <input type="password" id="loginPassword" placeholder="Password" />
+        </div>
+        <div class="btn-group">
+          <button id="loginBtn" class="primary-btn">Log In</button>
+          <button id="registerBtn" class="secondary-btn">Register</button>
+        </div>
       </div>
     </header>
 
@@ -45,155 +41,189 @@
 
       <!-- DASHBOARD SECTION (hidden pre-login) -->
       <section id="dashboard" class="dashboard-section" style="display: none">
-        <!-- PET INFO -->
-        <section class="container" id="petInfoWrapper">
-          <h2>🐶🐱 Pet General Info (Fill Once)</h2>
-          <form id="petInfoForm">
-            <div class="field-group">
-              <label for="petType">Pet Type</label>
-              <select id="petType" required>
-                <option value="">-- Choose --</option>
-                <option value="Dog">Dog</option>
-                <option value="Cat">Cat</option>
-              </select>
-              
-              <label for="petName">Name</label>
-              <input type="text" id="petName" required />
+        <div class="dashboard-flex">
+          <!-- LEFT PANEL -->
+          <div class="left-panel">
+            <!-- PET INFO SUMMARY -->
+            <section class="container" id="petInfoDisplay">
+              <h2>📌 Pet Info Summary</h2>
+              <div id="petInfoContent">No pet info saved yet.</div>
+            </section>
 
-              <label for="petAge">Age (years)</label>
-              <input type="number" id="petAge" min="0" required />
+            <!-- DAILY LOG HISTORY -->
+            <section class="container" id="logHistoryDisplay">
+              <h2>🗒 Daily Recovery History</h2>
+              <div id="logList"></div>
+            </section>
+          </div>
 
-              <label for="weight">Weight (kg)</label>
-              <input type="number" id="weight" step="0.1" required />
-
-              <label for="petBreed">Breed (if dog)</label>
-              <select id="petBreed">
-                <option value="">-- Choose breed --</option>
-              </select>
-
-              <label for="surgeryType">Type of Surgery</label>
-              <input type="text" id="surgeryType" required />
-
-              <label for="surgeryReason">Reason / Notes</label>
-              <textarea id="surgeryReason" rows="3"></textarea>
-
-              <button type="submit" class="primary-btn">Save Pet Info</button>
-            </div>
-          </form>
-        </section>
-
-        <!-- PET INFO SUMMARY -->
-        <section class="container" id="petInfoDisplay">
-          <h2>📌 Pet Info Summary</h2>
-          <div id="petInfoContent">No pet info saved yet.</div>
-        </section>
-
-        <!-- DAILY LOG -->
-        <section class="container" id="dailyLogWrapper">
-          <h2>🗓 Daily Recovery Log</h2>
-          <form id="logForm">
-            <div class="field-group">
-              <label for="date">Date of Entry</label>
-              <input type="date" id="date" required />
-              <button type="button" id="copyAllBtn" class="secondary-btn">
-                Copy all from last entry
-              </button>
-
-              <div class="flex-row">
-                <label for="food">Food Intake</label>
-                <select id="food" required>
-                  <option value="">-- Choose --</option>
-                  <option value="100%">100%</option>
-                  <option value="75%">75%</option>
-                  <option value="50%">50%</option>
-                  <option value="25%">25%</option>
-                  <option value="None">None</option>
-                </select>
+          <!-- RIGHT PANEL -->
+          <div class="right-panel">
+            <!-- OPTION BOXES (initial view) -->
+            <div id="rightBoxes" class="boxes-container">
+              <div class="option-box" id="newLogBox">
+                <p>Add a daily recovery log for your pet.</p>
+                <button class="primary-btn" id="showLogFormBtn">Add Log</button>
               </div>
 
-              <div class="field-group">
-                <label>Medications</label>
-                <div id="medications-wrapper">
-                  <div class="med-row flex-row">
-                    <input
-                      type="text"
-                      name="medName[]"
-                      class="medName"
-                      placeholder="Medicine Name"
-                    />
-                    <input
-                      type="number"
-                      name="medDosage[]"
-                      class="medDosage"
-                      placeholder="Dosage (mg)"
-                      min="0"
-                    />
-                    <input
-                      type="number"
-                      name="medTimes[]"
-                      class="medTimes"
-                      placeholder="Times per Day"
-                      min="0"
-                    />
-                  </div>
+              <div class="option-box" id="askAIBox">
+                <p>Get AI insights about your pet's recovery.</p>
+                <button class="primary-btn" id="showAIFormBtn">Ask AI</button>
+              </div>
+            </div>
+
+            <!-- PET INFO FORM -->
+            <section class="container" id="petInfoWrapper">
+              <h2>🐶🐱 Pet General Info (Fill Once)</h2>
+              <form id="petInfoForm">
+                <div class="field-group">
+                  <label for="petType">Pet Type</label>
+                  <select id="petType" required>
+                    <option value="">-- Choose --</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                  </select>
+
+                  <label for="petName">Name</label>
+                  <input type="text" id="petName" required />
+
+                  <label for="petAge">Age (years)</label>
+                  <input type="number" id="petAge" min="0" required />
+
+                  <label for="weight">Weight (kg)</label>
+                  <input type="number" id="weight" step="0.1" required />
+
+                  <label for="petBreed">Breed (if dog)</label>
+                  <select id="petBreed">
+                    <option value="">-- Choose breed --</option>
+                  </select>
+
+                  <label for="surgeryType">Type of Surgery</label>
+                  <input type="text" id="surgeryType" required />
+
+                  <label for="surgeryReason">Reason / Notes</label>
+                  <textarea id="surgeryReason" rows="3"></textarea>
+
+                  <button type="submit" class="primary-btn">
+                    Save Pet Info
+                  </button>
                 </div>
-                <button type="button" id="add-med">
-                  + Add another medication
-                </button>
-              </div>
-
-              <div class="flex-row">
-                <label for="energy">Energy / Mood</label>
-                <select id="energy" required>
-                  <option value="">-- Choose --</option>
-                  <option value="High">High</option>
-                  <option value="Normal">Normal</option>
-                  <option value="Low">Low</option>
-                </select>
-              </div>
-
-              <label for="notes">Notes</label>
-              <textarea id="notes" rows="3"></textarea>
-
-              <label for="photo" id="photo-label">Photo (optional)</label>
-              <input type="file" id="photo" accept="image/*" />
-
-              <button type="submit" class="primary-btn" id="add-log-btn">
-                Add Log
+              </form>
+            </section>
+            <!-- DAILY LOGS -->
+            <section class="container" id="dailyLogWrapper">
+              <button type="button" class="exit-btn" id="exitLogBtn">
+                ← Back
               </button>
-            </div>
-          </form>
+              <h2>🗓 Daily Recovery Log</h2>
+              <form id="logForm">
+                <div class="field-group">
+                  <label for="date">Date of Entry</label>
+                  <input type="date" id="date" required />
+                  <button type="button" id="copyAllBtn" class="secondary-btn">
+                    Copy all from last entry
+                  </button>
 
-          <h2>📋 Recovery History</h2>
-          <div id="logList"></div>
-        </section>
+                  <div class="flex-row">
+                    <label for="food">Food Intake</label>
+                    <select id="food" required>
+                      <option value="">-- Choose --</option>
+                      <option value="100%">100%</option>
+                      <option value="75%">75%</option>
+                      <option value="50%">50%</option>
+                      <option value="25%">25%</option>
+                      <option value="None">None</option>
+                    </select>
+                  </div>
 
-        <!-- ================= AI SECTION ================= -->
-        <section class="container" id="aiSection">
-          <h2>🤖 Ask AI about recovery</h2>
-          <form id="aiForm">
-            <label for="aiOption">AI Action:</label>
-            <select id="aiOption">
-              <option value="summary">Analyze Recovery</option>
-              <option value="question">Ask a Question</option>
-            </select>
-            <textarea
-              id="aiQuestion"
-              rows="3"
-              placeholder="Type your question..."
-              disabled
-            ></textarea>
-            <button type="submit" class="primary-btn">Ask AI</button>
-          </form>
-          <div id="aiAnswer"></div>
-        </section>
+                  <div class="field-group">
+                    <label>Medications</label>
+                    <div id="medications-wrapper">
+                      <div class="med-row flex-row">
+                        <input
+                          type="text"
+                          name="medName[]"
+                          class="medName"
+                          placeholder="Medicine Name"
+                        />
+                        <input
+                          type="number"
+                          name="medDosage[]"
+                          class="medDosage"
+                          placeholder="Dosage (mg)"
+                          min="0"
+                        />
+                        <input
+                          type="number"
+                          name="medTimes[]"
+                          class="medTimes"
+                          placeholder="Times per Day"
+                          min="0"
+                        />
+                      </div>
+                    </div>
+                    <button type="button" id="add-med">
+                      + Add another medication
+                    </button>
+                  </div>
 
-        <!-- RESET -->
-        <section class="container reset-wrapper">
-          <button type="button" onclick="resetAllData()" class="reset-btn">
-            Reset All Data
-          </button>
-        </section>
+                  <div class="flex-row">
+                    <label for="energy">Energy / Mood</label>
+                    <select id="energy" required>
+                      <option value="">-- Choose --</option>
+                      <option value="High">High</option>
+                      <option value="Normal">Normal</option>
+                      <option value="Low">Low</option>
+                    </select>
+                  </div>
+
+                  <label for="notes">Notes</label>
+                  <textarea id="notes" rows="3"></textarea>
+
+                  <label for="photo" id="photo-label">Photo (optional)</label>
+                  <input type="file" id="photo" accept="image/*" />
+
+                  <button type="submit" class="primary-btn" id="add-log-btn">
+                    Add Log
+                  </button>
+                </div>
+              </form>
+
+              <h2>📋 Recovery History</h2>
+              <div id="logList"></div>
+            </section>
+
+            <!-- ================= AI SECTION ================= -->
+            <section class="container" id="aiSection">
+              <button type="button" class="exit-btn" id="exitAIBtn">
+                ← Back
+              </button>
+              <h2>🤖 Ask AI about recovery</h2>
+              <form id="aiForm">
+                <label for="aiOption">AI Action:</label>
+                <select id="aiOption">
+                  <option value="summary">Analyze Recovery</option>
+                  <option value="question">Ask a Question</option>
+                </select>
+                <textarea
+                  id="aiQuestion"
+                  rows="3"
+                  placeholder="Type your question..."
+                  disabled
+                ></textarea>
+                <button type="submit" class="primary-btn">Ask AI</button>
+              </form>
+              <div id="aiAnswer"></div>
+            </section>
+
+            <!-- RESET -->
+            <section class="container reset-wrapper">
+              <button type="button" onclick="resetAllData()" class="reset-btn">
+                Reset All Data
+              </button>
+            </section>
+          </div>
+        </div>
       </section>
     </main>
 

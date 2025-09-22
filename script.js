@@ -1,14 +1,12 @@
 /* ============================
-  LOGIN / REGISTER HEADER HANDLERS
+   LOGIN / HEADER
 ============================ */
 const headerRight = document.getElementById('headerRight');
 const welcomeSection = document.getElementById('welcomeSection');
 const dashboardSection = document.getElementById('dashboard');
 
-// Hardcoded user for now
 const validUser = { username: 'admin', password: 'admin' };
 
-// Function to render pre-login header (inputs + buttons)
 function renderPreLoginHeader() {
     headerRight.innerHTML = `
         <div class="login-group">
@@ -20,39 +18,32 @@ function renderPreLoginHeader() {
             <button id="registerBtn" class="secondary-btn">Register</button>
         </div>
     `;
-
-    // Attach event listeners to the new elements
     document.getElementById('loginBtn').addEventListener('click', handleLogin);
     document.getElementById('registerBtn').addEventListener('click', () => {
         alert('Register clicked! (To be implemented)');
     });
 }
 
-// Function to handle login click
 function handleLogin() {
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
 
     if (username === validUser.username && password === validUser.password) {
-        // Hide welcome, show dashboard
         welcomeSection.style.display = 'none';
         dashboardSection.style.display = 'block';
-
-        // Render post-login header: user icon + sign out
         renderPostLoginHeader();
+        displayPetInfo();
+        displayLogs();
     } else {
         alert('Invalid username or password');
     }
 }
 
-// Function to render post-login header
 function renderPostLoginHeader() {
     headerRight.innerHTML = `
         <span class="user-icon">👤</span>
         <button id="signOutBtn" class="secondary-btn">Sign Out</button>
     `;
-
-    // Sign out handler
     document.getElementById('signOutBtn').addEventListener('click', () => {
         dashboardSection.style.display = 'none';
         welcomeSection.style.display = 'block';
@@ -60,23 +51,27 @@ function renderPostLoginHeader() {
     });
 }
 
-// Initialize header on page load
 renderPreLoginHeader();
 
 /* ============================
-  PET INFO SECTION
+   PET INFO
 ============================ */
 const petInfoForm = document.getElementById('petInfoForm');
 const petType = document.getElementById('petType');
 const breedSelect = document.getElementById('petBreed');
 const petInfoContent = document.getElementById('petInfoContent');
+const petInfoWrapper = document.getElementById('petInfoWrapper');
+const petInfoDisplay = document.getElementById('petInfoDisplay');
+const rightBoxes = document.getElementById('rightBoxes');
 
 let petInfo = JSON.parse(localStorage.getItem('petInfo')) || {};
 
 function displayPetInfo() {
     if (!petInfo.type) {
-        document.getElementById('petInfoDisplay').style.display = 'none';
-        document.getElementById('petInfoWrapper').style.display = 'block';
+        petInfoWrapper.style.display = 'block';
+        petInfoDisplay.style.display = 'none';
+        rightBoxes.style.display = 'none';
+        document.getElementById('logHistoryDisplay').style.display = 'none';
         return;
     }
 
@@ -91,10 +86,13 @@ function displayPetInfo() {
       <button type="button" id="editPetInfo" class="primary-btn">Edit Pet Info</button>
     `;
 
-    document.getElementById('petInfoWrapper').style.display = 'none';
+    petInfoWrapper.style.display = 'none';
+    petInfoDisplay.style.display = 'block';
+    rightBoxes.style.display = 'flex';
+    document.getElementById('logHistoryDisplay').style.display = 'block';
 
     document.getElementById('editPetInfo').addEventListener('click', () => {
-        document.getElementById('petInfoWrapper').style.display = 'block';
+        petInfoWrapper.style.display = 'block';
         petType.value = petInfo.type;
         document.getElementById('petName').value = petInfo.name || '';
         document.getElementById('petAge').value = petInfo.age;
@@ -102,6 +100,9 @@ function displayPetInfo() {
         breedSelect.value = petInfo.breed;
         document.getElementById('surgeryType').value = petInfo.surgeryType;
         document.getElementById('surgeryReason').value = petInfo.surgeryReason;
+        petInfoDisplay.style.display = 'none';
+        rightBoxes.style.display = 'none';
+        document.getElementById('logHistoryDisplay').style.display = 'none';
     });
 }
 
@@ -122,7 +123,7 @@ petInfoForm.addEventListener('submit', function (e) {
 });
 
 /* ============================
-  LOAD DOG BREEDS
+   LOAD DOG BREEDS
 ============================ */
 function loadDogBreeds() {
     fetch('https://dog.ceo/api/breeds/list/all')
@@ -141,13 +142,15 @@ function loadDogBreeds() {
 loadDogBreeds();
 
 /* ============================
-  DAILY LOG SECTION
+   DAILY LOGS
 ============================ */
-const form = document.getElementById('logForm');
-const logList = document.getElementById('logList');
+const logForm = document.getElementById('logForm');
+const addLogBtn = document.getElementById('add-log-btn');
+const dailyLogWrapper = document.getElementById('dailyLogWrapper');
 const photoInput = document.getElementById('photo');
 
 let logs = JSON.parse(localStorage.getItem('petLogs')) || [];
+let editIndex = null;
 
 // Add medication row
 document.getElementById('add-med').addEventListener('click', () => {
@@ -158,91 +161,154 @@ document.getElementById('add-med').addEventListener('click', () => {
     wrapper.appendChild(newRow);
 });
 
-// Display logs
 function displayLogs() {
-    logList.innerHTML = "";
+    const logList = document.getElementById('logList');
+    logList.innerHTML = '';
     logs.forEach((log, idx) => {
+        const medStr = log.meds.map(m => `${m.name || "—"} (${m.dosage || 0}mg x ${m.times || 0})`).join(', ');
         const div = document.createElement('div');
         div.className = 'log-entry';
         div.innerHTML = `
-          <strong>Date:</strong> ${log.date}<br>
-          <strong>Food:</strong> ${log.food}<br>
-          <strong>Medicine:</strong> ${log.medName || "—"} ${log.medDosage ? `(${log.medDosage} mg x ${log.medTimes}/day)` : ""}<br>
-          <strong>Energy:</strong> ${log.energy}<br>
-          <strong>Notes:</strong> ${log.notes || "—"}<br>
-          ${log.photo ? `<img src="${log.photo}" alt="Pet Photo">` : ''}<br>
-          <button type="button" class="edit-log-btn" data-index="${idx}">Edit</button>
+            <strong>Date:</strong> ${log.date}<br>
+            <strong>Food:</strong> ${log.food}<br>
+            <strong>Medicine:</strong> ${medStr}<br>
+            <strong>Energy:</strong> ${log.energy}<br>
+            <strong>Notes:</strong> ${log.notes || "—"}<br>
+            ${log.photo ? `<img src="${log.photo}" alt="Pet Photo" class="log-photo">` : ''}<br>
+            <button type="button" class="edit-log-btn" data-index="${idx}">Edit</button>
         `;
         logList.appendChild(div);
     });
 
-    // Edit log functionality
     document.querySelectorAll('.edit-log-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const idx = this.dataset.index;
+        btn.addEventListener('click', () => {
+            const idx = btn.dataset.index;
             const log = logs[idx];
+            editIndex = idx;
+            addLogBtn.innerText = 'Done';
+            showForm(dailyLogWrapper);
+
             document.getElementById('date').value = log.date;
             document.getElementById('food').value = log.food;
             document.getElementById('energy').value = log.energy;
-            document.getElementById('notes').value = log.notes;
+            document.getElementById('notes').value = log.notes || '';
             photoInput.value = '';
-            logs.splice(idx, 1);
-            localStorage.setItem('petLogs', JSON.stringify(logs));
-            displayLogs();
+
+            const wrapper = document.getElementById('medications-wrapper');
+            wrapper.innerHTML = '';
+            log.meds.forEach(med => {
+                const row = document.createElement('div');
+                row.className = 'med-row flex-row';
+                row.innerHTML = `
+                    <input type="text" class="medName" placeholder="Medicine Name" value="${med.name || ''}">
+                    <input type="number" class="medDosage" placeholder="Dosage (mg)" value="${med.dosage || ''}">
+                    <input type="number" class="medTimes" placeholder="Times per Day" value="${med.times || ''}">
+                `;
+                wrapper.appendChild(row);
+            });
         });
     });
 }
 
-// Add new log
-form.addEventListener('submit', function (e) {
+logForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const medRows = document.querySelectorAll('#medications-wrapper .med-row');
-    const medNames = [];
-    const medDosages = [];
-    const medTimes = [];
-    medRows.forEach(row => {
-        medNames.push(row.querySelector('.medName').value);
-        medDosages.push(row.querySelector('.medDosage').value);
-        medTimes.push(row.querySelector('.medTimes').value);
-    });
+    const meds = Array.from(medRows).map(row => ({
+        name: row.querySelector('.medName').value,
+        dosage: row.querySelector('.medDosage').value,
+        times: row.querySelector('.medTimes').value
+    }));
 
     const file = photoInput.files[0];
+
+    const finalizeLog = (photoData) => {
+        const newLog = {
+            date: document.getElementById('date').value,
+            food: document.getElementById('food').value,
+            energy: document.getElementById('energy').value,
+            notes: document.getElementById('notes').value,
+            meds,
+            photo: photoData || (editIndex !== null ? logs[editIndex].photo : null)
+        };
+
+        if (editIndex !== null) {
+            logs[editIndex] = newLog;
+            editIndex = null;
+        } else {
+            logs.push(newLog);
+        }
+
+        localStorage.setItem('petLogs', JSON.stringify(logs));
+        displayLogs();
+        logForm.reset();
+        addLogBtn.innerText = 'Add Log';
+
+        // Reset meds
+        const wrapper = document.getElementById('medications-wrapper');
+        wrapper.innerHTML = '';
+        const firstRow = document.createElement('div');
+        firstRow.className = 'med-row flex-row';
+        firstRow.innerHTML = `
+            <input type="text" class="medName" placeholder="Medicine Name">
+            <input type="number" class="medDosage" placeholder="Dosage (mg)">
+            <input type="number" class="medTimes" placeholder="Times per Day">
+        `;
+        wrapper.appendChild(firstRow);
+
+        dailyLogWrapper.style.display = 'none';
+        rightBoxes.style.display = 'flex';
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function (event) {
-            saveLog(event.target.result, medNames, medDosages, medTimes);
+            finalizeLog(event.target.result);
         }
         reader.readAsDataURL(file);
     } else {
-        saveLog(null, medNames, medDosages, medTimes);
+        finalizeLog(null);
     }
 });
+// COPY OF LOGS
 
-// Save log helper
-function saveLog(photoData, medNames, medDosages, medTimes) {
-    const newLog = {
-        date: document.getElementById('date').value,
-        food: document.getElementById('food').value,
-        medName: medNames.join(', '),
-        medDosage: medDosages.join(', '),
-        medTimes: medTimes.join(', '),
-        energy: document.getElementById('energy').value,
-        notes: document.getElementById('notes').value,
-        photo: photoData
-    };
-    logs.push(newLog);
-    localStorage.setItem('petLogs', JSON.stringify(logs));
-    displayLogs();
-    form.reset();
-}
+const copyAllBtn = document.getElementById('copyAllBtn');
 
-/* ============================
-  AI SECTION
-============================ */
+copyAllBtn.addEventListener('click', () => {
+    if (logs.length === 0) return alert("No previous logs to copy!");
+
+    const lastLog = logs[logs.length - 1];
+
+    document.getElementById('food').value = lastLog.food;
+    document.getElementById('energy').value = lastLog.energy;
+    document.getElementById('notes').value = lastLog.notes || '';
+
+    // Clear current med rows
+    const wrapper = document.getElementById('medications-wrapper');
+    wrapper.innerHTML = '';
+
+    // Populate meds from last log
+    lastLog.meds.forEach(med => {
+        const row = document.createElement('div');
+        row.className = 'med-row flex-row';
+        row.innerHTML = `
+            <input type="text" class="medName" placeholder="Medicine Name" value="${med.name || ''}">
+            <input type="number" class="medDosage" placeholder="Dosage (mg)" value="${med.dosage || ''}">
+            <input type="number" class="medTimes" placeholder="Times per Day" value="${med.times || ''}">
+        `;
+        wrapper.appendChild(row);
+    });
+
+    alert("Copied last log's data!");
+});
+
+// ============================
+// AI SECTION
+// ============================
 const aiForm = document.getElementById('aiForm');
 const aiQuestion = document.getElementById('aiQuestion');
 const aiAnswer = document.getElementById('aiAnswer');
 const aiOption = document.getElementById('aiOption');
+const aiSection = document.getElementById('aiSection');
 
 aiOption.addEventListener('change', function () {
     aiQuestion.disabled = this.value !== 'question';
@@ -252,7 +318,8 @@ aiForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const option = aiOption.value;
     const recentLogs = logs.slice(-7).map(log => {
-        return `${log.date}: Food ${log.food}, Meds ${log.medName || "—"} ${log.medDosage ? `(${log.medDosage} mg x ${log.medTimes}/day)` : ""}, Energy ${log.energy}, Notes: ${log.notes || "—"}, Photo ${log.photo ? "uploaded" : "none"}`;
+        const meds = log.meds.map(m => `${m.name || "—"} (${m.dosage || 0}mg x ${m.times || 0})`).join(', ');
+        return `${log.date}: Food ${log.food}, Meds ${meds}, Energy ${log.energy}, Notes: ${log.notes || "—"}, Photo ${log.photo ? "uploaded" : "none"}`;
     }).join("\n");
 
     let prompt = `Pet: ${petInfo.type || "Unknown"} (${petInfo.age || "?"} years, ${petInfo.breed || "Unknown breed"})\nSurgery: ${petInfo.surgeryType || "Unknown"}\nReason: ${petInfo.surgeryReason || "—"}\n\nRecovery logs (last 7 days):\n${recentLogs}\n`;
@@ -269,9 +336,9 @@ aiForm.addEventListener('submit', function (e) {
     aiQuestion.value = "";
 });
 
-/* ============================
-  RESET SECTION
-============================ */
+// ============================
+// RESET ALL DATA
+// ============================
 function resetAllData() {
     if (confirm("Are you sure you want to clear all pet info and logs?")) {
         localStorage.removeItem('petInfo');
@@ -281,14 +348,45 @@ function resetAllData() {
         petInfoContent.innerText = "No pet info saved yet.";
         displayLogs();
         petInfoForm.reset();
-        form.reset();
-        document.getElementById('petInfoWrapper').style.display = 'block';
+        logForm.reset();
+        petInfoWrapper.style.display = 'block';
+        rightBoxes.style.display = 'none';
         alert("All data cleared!");
     }
 }
 
-/* ============================
-  INITIALIZE
-============================ */
+// ============================
+// DASHBOARD FORM LOGIC
+// ============================
+const showLogFormBtn = document.getElementById('showLogFormBtn');
+const showAIFormBtn = document.getElementById('showAIFormBtn');
+const exitLogBtn = document.getElementById('exitLogBtn');
+const exitAIBtn = document.getElementById('exitAIBtn');
+
+dailyLogWrapper.style.display = 'none';
+aiSection.style.display = 'none';
+
+function showForm(formElement) {
+    rightBoxes.style.display = 'none';
+    dailyLogWrapper.style.display = 'none';
+    aiSection.style.display = 'none';
+    petInfoWrapper.style.display = 'none';
+    formElement.style.display = 'block';
+    window.scrollTo({ top: formElement.offsetTop, behavior: 'smooth' });
+}
+
+showLogFormBtn.addEventListener('click', () => showForm(dailyLogWrapper));
+showAIFormBtn.addEventListener('click', () => showForm(aiSection));
+
+exitLogBtn.addEventListener('click', () => {
+    dailyLogWrapper.style.display = 'none';
+    rightBoxes.style.display = 'flex';
+});
+exitAIBtn.addEventListener('click', () => {
+    aiSection.style.display = 'none';
+    rightBoxes.style.display = 'flex';
+});
+
+// INITIALIZE
 displayPetInfo();
 displayLogs();
