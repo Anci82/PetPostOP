@@ -1,196 +1,222 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
+/* ============================
+  GENERAL RESET & LAYOUT
+============================ */
+* {
+  box-sizing: border-box;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
   color: #333;
 }
 
-h1, h2 {
-  text-align: center;
-  color: #444;
-  margin-bottom: 12px;
+header.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #4CAF50;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.container {
-  max-width: 650px;
-  margin: 0 auto 25px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+header .header-left h1 {
+  font-size: 1.8rem;
 }
 
-form {
-  display: grid;
-  gap: 15px;
+header .header-right {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-label {
+header .header-right input[type="text"],
+header .header-right input[type="password"] {
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.3rem; /* small space below input */
+}
+
+header .header-right button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  margin-bottom: 0; /* remove extra margin */
+}
+
+/* Stack username below password, keep buttons in one row */
+header .header-right .login-group {
+  display: flex;
+  flex-direction: column;
+  margin-right: 0.5rem; /* space before buttons */
+}
+
+header .header-right .btn-group {
+  display: flex;
+  gap: 0.5rem; /* space between login/register buttons */
+}
+
+/* ============================
+  BUTTON STYLES
+============================ */
+.primary-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
   font-weight: bold;
 }
 
-input, select, textarea {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.primary-btn:hover {
+  background-color: #1b5e20;
+}
+
+.secondary-btn {
+  background-color: #fff;
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.secondary-btn:hover {
+  background-color: #2e7d32;
+  color: white;
+}
+
+/* ============================
+  MAIN WRAPPER
+============================ */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 1rem; */
+}
+
+/* ============================
+  WELCOME SECTION
+============================ */
+.welcome-section {
   width: 100%;
-  box-sizing: border-box;
+  height: calc(100vh - 70px); /* full screen minus header */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.welcome-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6); /* darken so text is readable */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.welcome-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 700px;
+  padding: 1rem;
+}
+
+.welcome-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-text p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+/* ============================
+  DASHBOARD / FORMS SECTION
+============================ */
+.dashboard-section {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ============================
+  CONTAINER STYLES
+============================ */
+.container {
+  background-color: white;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+/* ============================
+  FORM ELEMENTS
+============================ */
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  width: 100%;
+  padding: 0.4rem;
+  margin: 0.3rem 0 0.7rem 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 textarea {
   resize: vertical;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  padding: 8px 12px;
-  transition: all 0.2s ease;
-}
-
-.primary-btn {
-  background: #4CAF50;
-  color: white;
-}
-
-.primary-btn:hover {
-  background: #45a049;
-  transform: scale(1.05);
-}
-
-.secondary-btn {
-  background: #ff9800;
-  color: white;
-}
-
-.secondary-btn:hover {
-  background: #e68a00;
-  transform: scale(1.05);
-}
-
-.copy-btn {
-  background: #2196F3;
-  color: white;
-  font-size: 12px;
-  padding: 6px 8px;
-  margin-left: 5px;
-}
-
-.copy-btn:hover {
-  background: #1976D2;
-  transform: scale(1.05);
-}
-
-.reset-btn {
-  background: #f44336;
-  color: white;
-  width: 100%;
-  padding: 10px;
-}
-
-.reset-btn:hover {
-  background: #d32f2f;
-  transform: scale(1.03);
-}
-
+/* ============================
+  LOG SECTION
+============================ */
 .log-entry {
-  background: #f0f0f0;
-  border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px;
-  border-left: 4px solid #4CAF50;
-}
-
-.log-entry strong {
-  display: inline-block;
-  width: 100px;
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 0;
 }
 
 .log-entry img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin-top: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  max-width: 150px;
+  margin-top: 0.5rem;
 }
 
-.copied {
-  background-color: #fff8b3;
-  transition: background-color 1.5s ease;
-}
-
-.field-group {
-  display: grid;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 8px;
-  background: #fafafa;
-  border: 1px solid #ddd;
-}
-
+/* ============================
+  FLEX HELPERS
+============================ */
 .flex-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.flex-row input, .flex-row select {
-  flex: 1;
-}
-
-.helper-text {
-  font-size: 12px;
-  color: #666;
-  display: inline-block;
-}
-
-#logForm, .flex-row, #photo-label, #add-log-btn{
-  margin-top: 3em;
-}
-
-#date, .flex-row{
-  margin-bottom: 2em;
-}
-
-/* --- Fix nested medication section --- */
-.field-group .field-group {
-  background: none;      /* remove inner box background */
-  border: none;          /* remove inner border */
-  padding: 0;            /* remove inner padding */
-  margin: 0;             /* remove inner margin */
-  border-radius: 0;      /* remove rounded corners */
-  display: flex;         /* keep meds inputs in a row */
+  gap: 0.5rem;
   flex-wrap: wrap;
-  gap: 10px;
 }
 
-.field-group .field-group label {
-  display: block;        /* label above inputs */
-  margin-bottom: 5px;
-}
-
-#meds {
-  display: flex;         /* inputs row */
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
+/* ============================
+  RESET BUTTON
+============================ */
+.reset-btn {
+  background-color: #e53935;
+  color: white;
   border: none;
-  background: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-#meds input {
-  flex: 1;
-  min-width: 80px;
-}
-
-#meds .copy-btn {
-  flex: none;
-  margin-left: 5px;
-  padding: 6px 8px;
+.reset-btn:hover {
+  background-color: #b71c1c;
 }
