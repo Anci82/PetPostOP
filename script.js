@@ -218,24 +218,40 @@ document.getElementById('add-med').addEventListener('click', () => {
 function displayLogs() {
     const logList = document.getElementById('logList');
     logList.innerHTML = '';
+
     logs.forEach((log, idx) => {
         const medStr = log.meds.map(m => `${m.name || "—"} (${m.dosage || 0}mg x ${m.times || 0})`).join(', ');
+
         const div = document.createElement('div');
         div.className = 'log-entry';
+
         div.innerHTML = `
-            <strong>Date:</strong> ${log.date}<br>
-            <strong>Food:</strong> ${log.food}<br>
-            <strong>Medicine:</strong> ${medStr}<br>
-            <strong>Energy:</strong> ${log.energy}<br>
-            <strong>Notes:</strong> ${log.notes || "—"}<br>
-            ${log.photo ? `<img src="${log.photo}" alt="Pet Photo" class="log-photo">` : ''}<br>
-            <button type="button" class="primary-btn edit-log-btn" data-index="${idx}">Edit</button>
+            <div class="log-header">
+                <span>${log.date}</span>
+                <span>▶</span>
+            </div>
+            <div class="log-content">
+                <strong>Food:</strong> ${log.food}<br>
+                <strong>Medicine:</strong> ${medStr}<br>
+                <strong>Energy:</strong> ${log.energy}<br>
+                <strong>Notes:</strong> ${log.notes || "—"}<br>
+                ${log.photo ? `<img src="${log.photo}" alt="Pet Photo" class="log-photo">` : ''}<br>
+                <button type="button" class="primary-btn edit-log-btn" data-index="${idx}">Edit</button>
+            </div>
         `;
+
+        // toggle collapse
+        div.querySelector('.log-header').addEventListener('click', () => {
+            div.classList.toggle('active');
+        });
+
         logList.appendChild(div);
     });
 
+    // reattach edit buttons
     document.querySelectorAll('.edit-log-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent toggling when editing
             const idx = btn.dataset.index;
             const log = logs[idx];
             editIndex = idx;
@@ -263,6 +279,7 @@ function displayLogs() {
         });
     });
 }
+
 
 logForm.addEventListener('submit', function (e) {
     e.preventDefault();

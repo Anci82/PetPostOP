@@ -431,6 +431,125 @@ header .header-right button:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* soft shadow */
 
 }
+#petInfoContent {
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    line-height: 1.6; /* more breathing room */
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;   
+}
+#petInfoContent strong {
+    color: #1b3e7d; /* slightly darker accent */
+    display: inline-block;
+    width: 120px; /* align values neatly */
+    font-size: 1rem;
+}
+
+#petInfoContent button {
+    margin-top: 0.8rem;
+    align-self: flex-start;
+}
+/* ============================
+   LOG ENTRIES DISPLAY
+============================ */
+/* Collapsible log entry */
+.log-entry {
+    background: rgba(255,255,255,0.9);
+    border-left: 4px solid #95B7C7;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.log-entry:hover {
+    background: rgba(245,245,245,0.95);
+}
+
+.log-header {
+    font-weight: bold;
+    color: #1b3e7d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.log-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding-top: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.log-entry.active .log-content {
+    max-height: 500px; /* adjust as needed */
+    padding-top: 0.5rem;
+}
+
+
+.log-entry img.log-photo {
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.log-entry strong {
+    color: #1b3e7d;
+    display: inline-block;
+    width: 90px;
+}
+
+.edit-log-btn {
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+/* ============================
+   MEDICATION ROWS
+============================ */
+.med-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.med-row input {
+    flex: 1;
+}
+
+/* ============================
+   LOG HISTORY TITLE
+============================ */
+#logHistoryDisplay h3 {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #1b3e7d;
+}
+
+/* ============================
+   COPY ALL BUTTON
+============================ */
+#copyAllBtn {
+    background-color: #1b3e7d;
+    color: white;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+#copyAllBtn:hover {
+    background-color: #14518c;
+}
 
 
 /* ============================
