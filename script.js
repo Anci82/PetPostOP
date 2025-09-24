@@ -388,6 +388,7 @@ aiForm.addEventListener('submit', function (e) {
     aiQuestion.value = "";
 });
 
+
 // ============================
 // RESET ALL DATA
 // ============================
@@ -435,11 +436,15 @@ showAIFormBtn.addEventListener('click', () => showForm(aiSection));
 
 exitLogBtn.addEventListener('click', () => {
     dailyLogWrapper.style.display = 'none';
-    rightBoxes.style.display = 'flex';
+    editIndex = null; // cancel any editing
+    displayPetInfo();
+    displayLogs();
 });
 exitAIBtn.addEventListener('click', () => {
     aiSection.style.display = 'none';
-    rightBoxes.style.display = 'flex';
+    // ✅ restore everything dashboard-related
+    displayPetInfo();
+    displayLogs(); // optional, just to be sure logs are up to date
 });
 
 // INITIALIZE

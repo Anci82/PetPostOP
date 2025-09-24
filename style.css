@@ -361,7 +361,7 @@ header .header-right button:hover {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* soft dark overlay */
+    background: rgba(0, 0, 0, 0.5); /* soft dark overlay */
     border-radius: 15px;
     z-index: 0;
 }
