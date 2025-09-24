@@ -50,6 +50,24 @@ function renderPostLoginHeader() {
         renderPreLoginHeader();
     });
 }
+// HIDING HEADER
+let lastScroll = 0;
+const header = document.querySelector('.header-wrapper');
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+
+  if (currentScroll > lastScroll && currentScroll > 50) {
+    // scrolling down → hide header
+    header.classList.add('hidden');
+  } else {
+    // scrolling up → show header
+    header.classList.remove('hidden');
+  }
+
+  lastScroll = currentScroll;
+});
+
 
 renderPreLoginHeader();
 
@@ -175,7 +193,7 @@ function displayLogs() {
             <strong>Energy:</strong> ${log.energy}<br>
             <strong>Notes:</strong> ${log.notes || "—"}<br>
             ${log.photo ? `<img src="${log.photo}" alt="Pet Photo" class="log-photo">` : ''}<br>
-            <button type="button" class="edit-log-btn" data-index="${idx}">Edit</button>
+            <button type="button" class="primary-btn edit-log-btn" data-index="${idx}">Edit</button>
         `;
         logList.appendChild(div);
     });
