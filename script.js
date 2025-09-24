@@ -162,6 +162,42 @@ loadDogBreeds();
 /* ============================
    DAILY LOGS
 ============================ */
+// Helper function to resize an image and return a data URL
+function resizeImage(file, maxWidth, maxHeight, callback) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+            let width = img.width;
+            let height = img.height;
+
+            // Maintain aspect ratio
+            if (width > height) {
+                if (width > maxWidth) {
+                    height = Math.round((height *= maxWidth / width));
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width = Math.round((width *= maxHeight / height));
+                    height = maxHeight;
+                }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8); // adjust quality if needed
+            callback(resizedDataUrl);
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
 const logForm = document.getElementById('logForm');
 const addLogBtn = document.getElementById('add-log-btn');
 const dailyLogWrapper = document.getElementById('dailyLogWrapper');
@@ -274,18 +310,16 @@ logForm.addEventListener('submit', function (e) {
         wrapper.appendChild(firstRow);
 
         dailyLogWrapper.style.display = 'none';
-        rightBoxes.style.display = 'flex';
+        displayPetInfo();
     }
 
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            finalizeLog(event.target.result);
-        }
-        reader.readAsDataURL(file);
-    } else {
-        finalizeLog(null);
-    }
+    resizeImage(file, 300, 300, (resizedPhoto) => { // 300x300 is preview size
+        finalizeLog(resizedPhoto);
+    });
+} else {
+    finalizeLog(null);
+}
 });
 // COPY OF LOGS
 
@@ -389,6 +423,9 @@ function showForm(formElement) {
     dailyLogWrapper.style.display = 'none';
     aiSection.style.display = 'none';
     petInfoWrapper.style.display = 'none';
+    petInfoDisplay.style.display = 'none';
+    const logHistoryDisplay = document.getElementById('logHistoryDisplay');
+    if (logHistoryDisplay) logHistoryDisplay.style.display = 'none';
     formElement.style.display = 'block';
     window.scrollTo({ top: formElement.offsetTop, behavior: 'smooth' });
 }
