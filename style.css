@@ -180,7 +180,7 @@ header .header-right button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('images/background.png');
+    background-image: url('Images/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -310,7 +310,7 @@ header .header-right button:hover {
 
 /* Specific option boxes */
 #newLogBox {
-    background-image: url('images/logs.png');
+    background-image: url('Images/logs.png');
     background-size: cover;
     background-position: center;
     color: white;
@@ -321,7 +321,7 @@ header .header-right button:hover {
 }
 
 #askAIBox {
-    background-image: url('images/ai.png');
+    background-image: url('Images/ai.png');
     background-size: cover;
     background-position: center;
     color: white;
@@ -356,7 +356,7 @@ header .header-right button:hover {
 /* About box */
 #about {
     margin-top: 5em;
-    background: url('images/ritawoods.jpg') center/cover no-repeat;
+    background: url('Images/ritawoods.jpg') center/cover no-repeat;
     position: relative;
     border-radius: 15px;
     padding: 20px;
