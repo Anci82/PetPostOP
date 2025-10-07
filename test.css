@@ -1,0 +1,25 @@
+.petinfo-side {
+    flex: 1 1 60%;              /* fills 60% of the row but can grow/shrink */
+    display: flex;
+    flex-direction: column;     /* stack content vertically */
+    justify-content: center;    /* center content vertically */
+    align-items: center;        /* center content horizontally */
+    text-align: center;
+
+    color: white;
+    padding: 0.5rem 1rem;
+
+    background-image: url('Images/tag7.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* make image pale/transparent */
+    background-color: rgba(255, 255, 255, 0.4);  /* tweak opacity as needed */
+    background-blend-mode: lighten;
+
+    min-height: 550px;       /* ensures it has some vertical height */
+    height: auto;            /* let content define height if bigger */
+    width: 100%;             /* full width of its flex space */
+    border-radius: 10px;
+}

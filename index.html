@@ -93,58 +93,90 @@
 
             <!-- PET INFO FORM -->
             <section class="container" id="petInfoWrapper">
-              <h2>🐶🐱 Pet General Info (Fill Once)</h2>
-              <form id="petInfoForm">
-                <div class="field-group">
-                  <label for="petType">Pet Type</label>
-                  <select id="petType" required>
-                    <option value="">-- Choose --</option>
-                    <option value="Dog">Dog</option>
-                    <option value="Cat">Cat</option>
-                  </select>
+              <button type="button" class="exit-btn primary-btn" id="exitPetInfoBtn">
+                ← Back
+              </button>
+  <h2> Pet General Info </h2>
+  
+  <div class="petinfo-flex">
+    <!-- RIGHT SIDE: IMAGE + TEXT -->
+    <div class="petinfo-side">
+      <p>
+        Keep your pet’s info safe here! 💕  <br>
+        Add details once and track recovery progress with ease.
+      </p>
+      <img src="Images/tag7.png" alt="Happy pets" />
+      
+    </div>
+    <!-- LEFT SIDE: FORM -->
+    <form id="petInfoForm">
+      <div class="field-group">
+        <label for="petType">Pet Type:</label>
+        <select id="petType" required>
+          <option value="">-- Choose --</option>
+          <option value="Dog">Dog</option>
+          <option value="Cat">Cat</option>
+        </select>
 
-                  <label for="petName">Name</label>
-                  <input type="text" id="petName" required />
+        <label for="petName">Name:</label>
+        <input type="text" id="petName" required />
 
-                  <label for="petAge">Age (years)</label>
-                  <input type="number" id="petAge" min="0" required />
+        <label for="petAge">Age (years):</label>
+        <input type="number" id="petAge" min="0" required />
 
-                  <label for="weight">Weight (kg)</label>
-                  <input type="number" id="weight" step="0.1" required />
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" step="0.1" required />
 
-                  <label for="petBreed">Breed (if dog)</label>
-                  <select id="petBreed">
-                    <option value="">-- Choose breed --</option>
-                  </select>
+        <label for="petBreed">Breed (if dog):</label>
+        <select id="petBreed">
+          <option value="">-- Choose breed --</option>
+        </select>
 
-                  <label for="surgeryType">Type of Surgery</label>
-                  <input type="text" id="surgeryType" required />
+        <label for="surgeryType">Type of Surgery:</label>
+        <input type="text" id="surgeryType" required />
 
-                  <label for="surgeryReason">Reason / Notes</label>
-                  <textarea id="surgeryReason" rows="3"></textarea>
+        <label for="surgeryReason">Reason / Notes:</label>
+        <textarea id="surgeryReason" rows="3"></textarea>
 
-                  <button type="submit" class="primary-btn">
-                    Save Pet Info
-                  </button>
-                </div>
-              </form>
-            </section>
+        <button type="submit" class="primary-btn">
+          Save Pet Info
+        </button>
+      </div>
+    </form>
+
+    
+  </div>
+</section>
             <!-- DAILY LOGS -->
             <section class="container" id="dailyLogWrapper">
               <button type="button" class="exit-btn primary-btn" id="exitLogBtn">
                 ← Back
               </button>
               <h2>🗓 Daily Recovery Log</h2>
+              <div class="petinfo-flex">
+    <!-- RIGHT SIDE: IMAGE + TEXT -->
+    <div class="petinfo-side">
+      <p>
+        Log your pet's daily recovery details here! 💕 <br><br>
+        Track food, meds, energy, and notes easily.
+      </p>
+      <hr>
+      <img src="Images/logs3.png" alt="Happy pets" />
+    </div>
+
+    <!-- LEFT SIDE: FORM -->
               <form id="logForm">
+
                 <div class="field-group">
-                  <label for="date">Date of Entry</label>
+                  <label for="date">Date of Entry:</label>
                   <input type="date" id="date" required />
                   <button type="button" id="copyAllBtn" class="secondary-btn">
-                    Copy all from last entry
+                          📋 DUPLICATE LAST LOG ✂️
+
                   </button>
 
                   <div class="flex-row">
-                    <label for="food">Food Intake</label>
+                    <label for="food">Food Intake:</label>
                     <select id="food" required>
                       <option value="">-- Choose --</option>
                       <option value="100%">100%</option>
@@ -156,7 +188,7 @@
                   </div>
 
                   <div class="field-group">
-                    <label>Medications</label>
+                    <label>Medications:</label>
                     <div id="medications-wrapper">
                       <div class="med-row flex-row">
                         <input
@@ -187,7 +219,7 @@
                   </div>
 
                   <div class="flex-row">
-                    <label for="energy">Energy / Mood</label>
+                    <label for="energy">Energy / Mood:</label>
                     <select id="energy" required>
                       <option value="">-- Choose --</option>
                       <option value="High">High</option>
@@ -196,10 +228,10 @@
                     </select>
                   </div>
 
-                  <label for="notes">Notes</label>
+                  <label for="notes">Notes:</label>
                   <textarea id="notes" rows="3"></textarea>
 
-                  <label for="photo" id="photo-label">Photo (optional)</label>
+                  <label for="photo" id="photo-label">Photo (optional):</label>
                   <input type="file" id="photo" accept="image/*" />
 
                   <button type="submit" class="primary-btn" id="add-log-btn">
@@ -207,9 +239,7 @@
                   </button>
                 </div>
               </form>
-
-              <h2>📋 Recovery History</h2>
-              <div id="logList"></div>
+            </div>
             </section>
 
             <!-- ================= AI SECTION ================= -->
